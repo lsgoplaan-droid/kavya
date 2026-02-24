@@ -36,6 +36,15 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
-# generated native folders
+# iOS (generated — not tracked)
 /ios
-/android
+
+# Android — track source but exclude build artifacts and machine-local config
+/android/.gradle/
+/android/app/build/
+/android/build/
+/android/local.properties
+
+# Bug reports / crash dumps
+*.zip
+bugreport-*
