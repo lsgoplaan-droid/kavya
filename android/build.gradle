@@ -19,9 +19,10 @@ allprojects {
     maven { url 'https://www.jitpack.io' }
   }
 
-  // Redirect library module build dirs outside OneDrive to prevent sync locking during builds.
-  // The :app module is kept in-place so Expo CLI can find the APK at the standard path.
-  if (project.path != ':' && project.path != ':app') {
+  // Redirect ALL module build dirs outside OneDrive to prevent sync locking during builds.
+  // A Windows directory junction at android/app/build → C:/gradle-build/app/build
+  // ensures Expo CLI still finds the APK at the standard path.
+  if (project.path != ':') {
     buildDir = new File("C:/gradle-build/${project.name}/build")
   }
 }

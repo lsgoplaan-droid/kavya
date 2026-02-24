@@ -4,7 +4,7 @@ import { logger } from '../lib/logger';
 import type { TranslationResult } from '../types';
 
 const TAG = 'claudeService';
-const MODEL = 'claude-sonnet-4-6';
+const MODEL = 'claude-haiku-4-5-20251001';
 
 function parseClaudeResponse(rawText: string): TranslationResult {
   // Strip markdown code fences if Claude wraps the JSON despite instructions

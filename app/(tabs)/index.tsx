@@ -84,6 +84,33 @@ export default function TranslateScreen() {
     }
   };
 
+  const handleGalleryPress = async () => {
+    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permission.granted) {
+      Alert.alert(
+        'Permission needed',
+        'Photo library permission is required to upload images.'
+      );
+      return;
+    }
+
+    const picked = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: 'images',
+      quality: 0.8,
+      base64: true,
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+
+    if (!picked.canceled && picked.assets[0]) {
+      const asset = picked.assets[0];
+      setImageUri(asset.uri);
+      const base64 = asset.base64!;
+      const mimeType = (asset.mimeType as 'image/jpeg' | 'image/png') ?? 'image/jpeg';
+      await translateFromImage(base64, mimeType, asset.uri);
+    }
+  };
+
   const handleTranslate = async () => {
     if (method === 'camera' && imageUri) return;
     if (!text.trim()) return;
@@ -117,6 +144,7 @@ export default function TranslateScreen() {
             onMethodChange={handleMethodChange}
             onTextChange={(t) => { setText(t); setVerseSource(null); clear(); }}
             onCameraPress={handleCameraPress}
+            onGalleryPress={handleGalleryPress}
             onClearImage={() => { setImageUri(null); clear(); }}
             onStartRecording={startRecording}
             onStopRecording={stopRecording}

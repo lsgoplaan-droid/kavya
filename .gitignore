@@ -48,3 +48,6 @@ yarn-error.*
 # Bug reports / crash dumps
 *.zip
 bugreport-*
+
+# IDE workspace files
+*.code-workspace

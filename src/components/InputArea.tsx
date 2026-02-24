@@ -20,6 +20,7 @@ interface Props {
   onMethodChange: (method: InputMethod) => void;
   onTextChange: (text: string) => void;
   onCameraPress: () => void;
+  onGalleryPress: () => void;
   onClearImage: () => void;
   onStartRecording?: () => void;
   onStopRecording?: () => void;
@@ -34,6 +35,7 @@ export function InputArea({
   onMethodChange,
   onTextChange,
   onCameraPress,
+  onGalleryPress,
   onClearImage,
   onStartRecording,
   onStopRecording,
@@ -84,10 +86,20 @@ export function InputArea({
             </TouchableOpacity>
           </View>
         ) : (
-          <TouchableOpacity style={styles.cameraPlaceholder} onPress={onCameraPress}>
-            <Text style={styles.cameraIcon}>📷</Text>
-            <Text style={styles.cameraHint}>Tap to photograph a Tamil, Hindi, or Sanskrit verse</Text>
-          </TouchableOpacity>
+          <View style={styles.cameraPlaceholder}>
+            <Text style={styles.cameraHint}>Choose an image source</Text>
+            <View style={styles.cameraButtons}>
+              <TouchableOpacity style={styles.cameraBtn} onPress={onCameraPress}>
+                <Text style={styles.cameraBtnIcon}>📷</Text>
+                <Text style={styles.cameraBtnLabel}>Take Photo</Text>
+              </TouchableOpacity>
+              <View style={styles.cameraDivider} />
+              <TouchableOpacity style={styles.cameraBtn} onPress={onGalleryPress}>
+                <Text style={styles.cameraBtnIcon}>🖼️</Text>
+                <Text style={styles.cameraBtnLabel}>Upload Image</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         )
       ) : (
         <TextInput
@@ -132,14 +144,34 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.surfaceAlt,
-  },
-  cameraIcon: {
-    fontSize: 40,
-    marginBottom: spacing.sm,
+    gap: spacing.md,
+    paddingVertical: spacing.lg,
   },
   cameraHint: {
     fontSize: font.sizeSm,
     color: colors.textSecondary,
+  },
+  cameraButtons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  cameraBtn: {
+    alignItems: 'center',
+    paddingHorizontal: spacing.xl,
+    gap: spacing.xs,
+  },
+  cameraBtnIcon: {
+    fontSize: 36,
+  },
+  cameraBtnLabel: {
+    fontSize: font.sizeSm,
+    color: colors.textSecondary,
+    fontWeight: font.weightMedium,
+  },
+  cameraDivider: {
+    width: 1,
+    height: 48,
+    backgroundColor: colors.border,
   },
   imageContainer: {
     borderRadius: radius.md,
