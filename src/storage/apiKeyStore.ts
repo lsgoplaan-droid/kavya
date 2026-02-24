@@ -3,7 +3,12 @@ import { Platform } from 'react-native';
 
 const API_KEY_STORE_KEY = 'anthropic_api_key';
 
+// If a key is bundled at build time (for shared/demo APKs), always use it.
+export const BUNDLED_API_KEY: string | null =
+  process.env.EXPO_PUBLIC_ANTHROPIC_API_KEY ?? null;
+
 export async function getApiKey(): Promise<string | null> {
+  if (BUNDLED_API_KEY) return BUNDLED_API_KEY;
   if (Platform.OS === 'web') {
     return localStorage.getItem(API_KEY_STORE_KEY);
   }

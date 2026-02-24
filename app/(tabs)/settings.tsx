@@ -13,6 +13,7 @@ import {
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useApiKey } from '../../src/hooks/useApiKey';
+import { BUNDLED_API_KEY } from '../../src/storage/apiKeyStore';
 import { clearHistory } from '../../src/storage/historyStore';
 import { colors, spacing, radius, font } from '../../src/constants/theme';
 
@@ -83,60 +84,69 @@ export default function SettingsScreen() {
           <Text style={styles.sectionTitle}>Anthropic API Key</Text>
 
           <View style={styles.card}>
-            <View style={styles.keyRow}>
-              <Text style={styles.keyLabel}>Current Key</Text>
-              <Text style={styles.keyValue}>{maskedKey}</Text>
-            </View>
-
-            {editing ? (
-              <View style={styles.editArea}>
-                <TextInput
-                  style={styles.input}
-                  placeholder="sk-ant-api03-..."
-                  placeholderTextColor={colors.textMuted}
-                  value={newKey}
-                  onChangeText={setNewKey}
-                  secureTextEntry
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  autoFocus
-                />
-                <View style={styles.editButtons}>
-                  <TouchableOpacity
-                    style={styles.cancelBtn}
-                    onPress={() => { setEditing(false); setNewKey(''); }}
-                  >
-                    <Text style={styles.cancelBtnText}>Cancel</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[styles.saveBtn, (!newKey.trim() || saving) && styles.saveBtnDisabled]}
-                    onPress={handleSaveKey}
-                    disabled={!newKey.trim() || saving}
-                  >
-                    <Text style={styles.saveBtnText}>{saving ? 'Saving...' : 'Save'}</Text>
-                  </TouchableOpacity>
-                </View>
+            {BUNDLED_API_KEY ? (
+              <View style={styles.keyRow}>
+                <Text style={styles.keyLabel}>Status</Text>
+                <Text style={[styles.keyValue, { color: colors.primary }]}>Built-in key active</Text>
               </View>
             ) : (
-              <View style={styles.keyActions}>
-                <TouchableOpacity style={styles.actionBtn} onPress={() => setEditing(true)}>
-                  <Text style={styles.actionBtnText}>
-                    {hasKey ? 'Change Key' : 'Add Key'}
-                  </Text>
-                </TouchableOpacity>
-                {hasKey && (
-                  <TouchableOpacity style={styles.actionBtnDanger} onPress={handleDeleteKey}>
-                    <Text style={styles.actionBtnDangerText}>Delete Key</Text>
-                  </TouchableOpacity>
-                )}
-              </View>
-            )}
+              <>
+                <View style={styles.keyRow}>
+                  <Text style={styles.keyLabel}>Current Key</Text>
+                  <Text style={styles.keyValue}>{maskedKey}</Text>
+                </View>
 
-            <TouchableOpacity
-              onPress={() => Linking.openURL('https://console.anthropic.com/settings/keys')}
-            >
-              <Text style={styles.link}>Get an API key at console.anthropic.com →</Text>
-            </TouchableOpacity>
+                {editing ? (
+                  <View style={styles.editArea}>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="sk-ant-api03-..."
+                      placeholderTextColor={colors.textMuted}
+                      value={newKey}
+                      onChangeText={setNewKey}
+                      secureTextEntry
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      autoFocus
+                    />
+                    <View style={styles.editButtons}>
+                      <TouchableOpacity
+                        style={styles.cancelBtn}
+                        onPress={() => { setEditing(false); setNewKey(''); }}
+                      >
+                        <Text style={styles.cancelBtnText}>Cancel</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={[styles.saveBtn, (!newKey.trim() || saving) && styles.saveBtnDisabled]}
+                        onPress={handleSaveKey}
+                        disabled={!newKey.trim() || saving}
+                      >
+                        <Text style={styles.saveBtnText}>{saving ? 'Saving...' : 'Save'}</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                ) : (
+                  <View style={styles.keyActions}>
+                    <TouchableOpacity style={styles.actionBtn} onPress={() => setEditing(true)}>
+                      <Text style={styles.actionBtnText}>
+                        {hasKey ? 'Change Key' : 'Add Key'}
+                      </Text>
+                    </TouchableOpacity>
+                    {hasKey && (
+                      <TouchableOpacity style={styles.actionBtnDanger} onPress={handleDeleteKey}>
+                        <Text style={styles.actionBtnDangerText}>Delete Key</Text>
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                )}
+
+                <TouchableOpacity
+                  onPress={() => Linking.openURL('https://console.anthropic.com/settings/keys')}
+                >
+                  <Text style={styles.link}>Get an API key at console.anthropic.com →</Text>
+                </TouchableOpacity>
+              </>
+            )}
           </View>
         </View>
 
@@ -174,11 +184,11 @@ export default function SettingsScreen() {
             </View>
             <View style={styles.aboutRow}>
               <Text style={styles.aboutLabel}>Version</Text>
-              <Text style={styles.aboutValue}>1.0.0</Text>
+              <Text style={styles.aboutValue}>0.2.0</Text>
             </View>
             <View style={styles.aboutRow}>
               <Text style={styles.aboutLabel}>AI Model</Text>
-              <Text style={styles.aboutValue}>Claude claude-sonnet-4-6</Text>
+              <Text style={styles.aboutValue}>Claude Haiku 4.5</Text>
             </View>
           </View>
         </View>
