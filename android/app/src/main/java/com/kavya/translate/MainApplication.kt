@@ -1,4 +1,4 @@
-package com.anonymous.tamilpoemtranslator
+package com.kavya.translate
 
 import android.app.Application
 import android.content.res.Configuration

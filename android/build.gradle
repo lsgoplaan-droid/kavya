@@ -20,9 +20,8 @@ allprojects {
   }
 
   // Redirect ALL module build dirs outside OneDrive to prevent sync locking during builds.
-  // A Windows directory junction at android/app/build → C:/gradle-build/app/build
-  // ensures Expo CLI still finds the APK at the standard path.
-  if (project.path != ':') {
+  // Only applies on Windows to avoid OneDrive file-lock issues; CI (Linux) uses default.
+  if (project.path != ':' && System.getProperty('os.name').toLowerCase().contains('windows')) {
     buildDir = new File("C:/gradle-build/${project.name}/build")
   }
 }

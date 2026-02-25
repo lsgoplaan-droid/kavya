@@ -45,6 +45,9 @@ yarn-error.*
 /android/build/
 /android/local.properties
 
+# Release signing keystore — never commit
+*.keystore
+
 # Bug reports / crash dumps
 *.zip
 bugreport-*
